@@ -1,9 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-import requests 
+import requests
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+
 from django.templatetags.static import static
 from django.template import loader
 from .models import movies
+from .serializers import moviesSerializer
+
     
 import csv
 import xlrd
@@ -70,7 +73,7 @@ def load_movies(request):
 
             movies_list_dic.append(rec)       
 
-   
+    filename = open('static\datasets\movie-dataset-latest.csv', 'r', encoding='UTF-8')
     file = csv.DictReader(filename)
     for col in file:
         rec = {
@@ -80,7 +83,7 @@ def load_movies(request):
             "data_sources" : 'movie-dataset-latest',
         }
         if not list(filter(lambda movies_list_dic: movies_list_dic['title'] == rec["title"], movies_list_dic)) :
-  
+            print("erfrrfr")
             movies_list_dic.append(rec)   
 
     dataframe = xlrd.open_workbook("static\datasets\\NetflixDataset.xlsx")
@@ -103,3 +106,8 @@ def load_movies(request):
         data.save()
 
     return HttpResponse("""<html><script>window.location.replace('/movies');</script></html>""")
+
+def movies_list(request):
+    movies_oj =  movies.objects.all()
+    serialize = moviesSerializer(movies_oj,many=True)
+    return JsonResponse({"movies":serialize.data}, safe=False)
