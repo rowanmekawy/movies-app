@@ -108,6 +108,6 @@ def load_movies(request):
     return HttpResponse("""<html><script>window.location.replace('/movies');</script></html>""")
 
 def movies_list(request):
-    movies_oj =  movies.objects.all()
+    movies_oj =  movies.objects.all().order_by('rate')
     serialize = moviesSerializer(movies_oj,many=True)
     return JsonResponse({"movies":serialize.data}, safe=False)
