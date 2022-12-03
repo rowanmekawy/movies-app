@@ -1,4 +1,5 @@
 # movies-app
+developed using django framework
 to run project
 python .\manage.py makemigrations .\movies_data
 python .\manage.py sqlmigrate movies_data 0001
