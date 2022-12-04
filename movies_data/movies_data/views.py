@@ -73,7 +73,7 @@ def load_movies(request):
 
             movies_list_dic.append(rec)       
 
-    filename = open('static\datasets\movie-dataset-latest.csv', 'r', encoding='UTF-8')
+    filename = open('static\datasets\movie-dataset-latest.csv', 'r', encoding='UTF-8') 
     file = csv.DictReader(filename)
     for col in file:
         rec = {
