@@ -83,7 +83,6 @@ def load_movies(request):
             "data_sources" : 'movie-dataset-latest',
         }
         if not list(filter(lambda movies_list_dic: movies_list_dic['title'] == rec["title"], movies_list_dic)) :
-            print("erfrrfr")
             movies_list_dic.append(rec)   
 
     dataframe = xlrd.open_workbook("static\datasets\\NetflixDataset.xlsx")
@@ -108,6 +107,6 @@ def load_movies(request):
     return HttpResponse("""<html><script>window.location.replace('/movies');</script></html>""")
 
 def movies_list(request):
-    movies_oj =  movies.objects.all().order_by('rate')
+    movies_oj =  movies.objects.all().order_by('-rate').values()
     serialize = moviesSerializer(movies_oj,many=True)
     return JsonResponse({"movies":serialize.data}, safe=False)
